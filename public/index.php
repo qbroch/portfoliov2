@@ -25,11 +25,16 @@
                 </p>
             </div>
             <div>
-                <p class="">
+                <p class="font-bold text-5xl">
                     Je développe des 
                 </p>
-                <p class="">
+                <p class="text-primary font-bold text-5xl">
                     applications web modernes
+                </p>
+            </div>
+            <div class="w-full md:w-[60%]">
+                <p>
+                Étudiant en informatique, je conçois des applications web, des API et des outils backend avec une attention particulière portée à leur conception.
                 </p>
             </div>
         </div>
