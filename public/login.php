@@ -1,0 +1,67 @@
+<?php
+require_once __DIR__ . '/../src/Database.php';
+require_once __DIR__ . '/../src/Auth.php';
+
+$auth = new Auth();
+$error = '';
+$user = '';
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+    $user = is_string($_POST['user'] ?? null) ? trim($_POST['user']) : '';
+    $password = is_string($_POST['password'] ?? null) ? $_POST['password'] : '';
+    if ($user === '' || $password === '') {
+        $error = 'Renseigne ton nom et ton mot de passe.';
+    } else {
+        try {
+            $pdo = (new Database())->getConnection();
+            if ($auth->login($pdo, $user, $password)) {
+                header('Location: admin/index.php', true, 303);
+                exit;
+            }
+            $error = 'Identifiants incorrects.';
+        } catch (Throwable $e) {
+            error_log('login: ' . get_class($e) . ' (code ' . $e->getCode() . ')');
+            $error = 'Connexion à la base impossible. Vérifie sa configuration et les journaux PHP.';
+        }
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="fr">
+<?php 
+    $title = "Partie admin";
+    require __DIR__ . "/../components/head.php";
+?>
+<body>
+    <header>
+        <nav>
+            <div class="bg-surface rounded-xl shadow-2xl px-4 py-2">
+                <div class="flex flex-row items-center justify-center w-full gap-8 min-h-16">
+                    <img src="assets/image/logo.png" alt="Logo du portfolio" class="w-36 h-auto shrink-0">
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="flex justify-center p-12">
+            <form action="login.php" method="POST" class="p-6 border border-surface w-[450px] flex flex-col items-center gap-8 ">
+                <h1 class="font-bold text-text-primary text-4xl">Page admin</h1>
+                <h2 class="font-bold text-text-primary text-2xl">-- Connexion --</h2>
+                <div>
+                    <label for="user" class="p-4 text-text-primary font-bold">Username : </label>
+                    <input id="user" name="user" required maxlength="50" autocomplete="username" value="<?= htmlspecialchars($user, ENT_QUOTES, 'UTF-8') ?>" type="text" placeholder="Ex : abroce" class="bg-surface shadow-md rounded-md p-2"> 
+                </div>
+                <div>
+                    <label for="password" class="p-4 text-text-primary font-bold">Password : </label>
+                    <input id="password" name="password" required autocomplete="current-password" type="password" placeholder="Ex : Pass1234" class="bg-surface shadow-md rounded-md p-2"> 
+                </div>
+
+                <?php if ($error !== ''): ?>
+                    <p role="alert" class="text-red-400"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></p>
+                <?php endif; ?>
+                <button type="submit" class="bg-primary w-full rounded-xl p-2 hover:bg-[#3843ac] duration-200 transitions-colors">Se connecter</button>
+            </form>
+
+        </div>
+    </main>
+</body>
+</html>
