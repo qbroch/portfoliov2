@@ -24,8 +24,10 @@
                         "text-primary": "#FAFAFA",
                         "text-secondary": "#A1A1AA",
 
-                        primary: "#6366F1",
-                        "primary-hover": "#818CF8"
+                        primary: {
+                            DEFAULT: "#6366F1",
+                            hover: "#818CF8"
+                        }
                     },
 
                     fontFamily: {
