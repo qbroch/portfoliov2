@@ -3,6 +3,10 @@ require_once __DIR__ . '/../src/Database.php';
 require_once __DIR__ . '/../src/Auth.php';
 
 $auth = new Auth();
+if (!$auth->isLoggedIn()) {
+    header('Location: login.php', true, 302);
+    exit;
+}
 $error = '';
 $user = '';
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {

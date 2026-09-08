@@ -17,19 +17,21 @@ CREATE TABLE IF NOT EXISTS admin (
 
 CREATE TABLE IF NOT EXISTS technologie (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    nom VARCHAR(50) NOT NULL UNIQUE
+    nom VARCHAR(50) NOT NULL UNIQUE,
+       img_link TEXT
 );
 
 CREATE TABLE IF NOT EXISTS project (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(150) NOT NULL,
     description TEXT NOT NULL,
-    img_link TEXT
+ 
 );
 
 CREATE TABLE IF NOT EXISTS project_techno (
     project_id BIGINT NOT NULL,
     technologie_id BIGINT NOT NULL,
+    
 
     PRIMARY KEY (project_id, technologie_id),
 
