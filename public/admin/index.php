@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <?php
     $title = "Accueil Admin";
-    require "../../components/head.php";
+    $publicPath = "../";
+    require __DIR__ . "/../../components/admin/head.php";
 ?>
 <body>
     <header>
         <?php
-            require "../../components/navbar.php";
+            require __DIR__ . "/../../components/admin/navbar.php";
         ?>
     </header>
 

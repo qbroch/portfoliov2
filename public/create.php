@@ -18,9 +18,12 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                 exit;
             }
             $error = 'Nom déjà utilisé ou saisie invalide (nom : 50 caractères maximum ; mot de passe : 8 à 72 octets).';
-        } catch (Throwable $e) {
+        } catch (PDOException $e) {
             error_log('create: ' . get_class($e) . ' (code ' . $e->getCode() . ')');
-            $error = 'Connexion à la base impossible. Vérifie sa configuration et les journaux PHP.';
+            $error = 'Erreur de base de données. Consulte les journaux PHP.';
+        } catch (Throwable $e) {
+            error_log('create: ' . get_class($e) . ' dans ' . $e->getFile() . ':' . $e->getLine());
+            $error = 'Erreur interne pendant le traitement du formulaire. Consulte les journaux PHP.';
         }
     }
 }
@@ -29,17 +32,12 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 <html lang="fr">
 <?php 
     $title = "Partie admin";
-    require __DIR__ . "/../components/head.php";
+    $publicPath = "./";
+    require __DIR__ . "/../components/admin/head.php";
 ?>
 <body>
     <header>
-        <nav>
-            <div class="bg-surface rounded-xl shadow-2xl px-4 py-2">
-                <div class="flex flex-row items-center justify-center w-full gap-8 min-h-16">
-                    <img src="assets/image/logo.png" alt="Logo du portfolio" class="w-36 h-auto shrink-0">
-                </div>
-            </div>
-        </nav>
+        <?php require __DIR__ . "/../components/admin/navbar.php"; ?>
     </header>
     <main>
         <div class="flex justify-center p-12">
